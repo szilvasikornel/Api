@@ -60,6 +60,7 @@ function getApartmentById($dbconn, $id) {
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $result = $stmt->get_result();
+    // Ellenőrzi, hogy van-e találat
     if ($result->num_rows > 0) {
         http_response_code(200);
         echo json_encode(['status' => 'success', 'data' => $result->fetch_assoc()]);
