@@ -54,16 +54,17 @@ switch ($requestMethod) {
 
 // GET egy apartman ID alapján
 function getApartmentById($dbconn, $id) {
-    $query = "SELECT * FROM apartments WHERE id = $id";
-    $result = mysqli_query($dbconn, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $data = mysqli_fetch_assoc($result);
+    $query = "SELECT * FROM apartments WHERE id = ?";
+    $stmt = $dbconn->prepare($query);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
         http_response_code(200);
-        echo json_encode(["status" => "success", "data" => $data]);
-    } else {
+        echo json_encode(['status' => 'success', 'data' => $result->fetch_assoc()]);
+    }else{
         http_response_code(404);
-        echo json_encode(["status" => "error", "message" => "Nem található az adott ID-val"]);
+        echo json_encode(['status' => 'error', 'message' => 'Lakás nem található.']);    
     }
 }
 
