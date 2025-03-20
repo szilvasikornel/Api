@@ -1,4 +1,5 @@
 <?php
+// include 'connect.php';
 $servername = "localhost";
 $username = "root";
 $password = "";
